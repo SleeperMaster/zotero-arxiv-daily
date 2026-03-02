@@ -22,7 +22,7 @@ class Paper:
     score: Optional[float] = None
 
     def _generate_tldr_with_llm(self, openai_client:OpenAI,llm_params:dict) -> str:
-        lang = llm_params.get('language', 'English')
+        lang = llm_params.get('language', 'Chinese')
         prompt = f"Given the following information of a paper, generate a one-sentence TLDR summary in {lang}:\n\n"
         if self.title:
             prompt += f"Title:\n {self.title}\n\n"
