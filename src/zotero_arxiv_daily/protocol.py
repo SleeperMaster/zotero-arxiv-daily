@@ -34,11 +34,14 @@ class Paper:
         """
         # prompt = f"Given the following information of a paper, generate a one-sentence TLDR summary in {lang}:\n\n"
         if self.title:
-            prompt += f"Title:\n {self.title}\n\n"
+            prompt += f"标题：{self.title}\n\n"
+            # prompt += f"Title:\n {self.title}\n\n"
         if self.full_text:
-            prompt += f"Preview of main content:\n {self.full_text}\n\n"
+            prompt += f"正文预览：{self.full_text}\n\n"
+            # prompt += f"Preview of main content:\n {self.full_text}\n\n"
         elif self.abstract:
-            prompt += f"Abstract: {self.abstract}\n\n"
+            prompt += f"摘要：{self.abstract}\n\n"
+            # prompt += f"Abstract: {self.abstract}\n\n"
         else:
             logger.warning(f"Neither full text nor abstract is provided for {self.url}")
             return "Failed to generate TLDR. Neither full text nor abstract is provided"
@@ -50,19 +53,26 @@ class Paper:
         prompt = enc.decode(prompt_tokens)
         
         response = openai_client.chat.completions.create(
-            messages=[
-                {
-                    "role": "system",
-                    "content": {
-                            "role": "system",
-                            "content": f"You must answer strictly in {lang}. Do NOT use English.",
-                            # f"You are an assistant who perfectly summarizes scientific paper, and gives the core idea of the paper to the user. Your answer should be in {lang}.",
-                        }
-                },
-                {"role": "user", "content": prompt},
-            ],
-            **llm_params.get('generation_kwargs', {})
-        )
+        response = openai_client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "system",
+                        "content": f"你必须严格使用{lang}回答，不得使用英文。",
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+                **llm_params.get('generation_kwargs', {})
+            )
+            # messages=[
+            #     {
+            #         "role": "system",
+            #         "content": f"You must answer strictly in {lang}. Do NOT use English.",
+            #                 # f"You are an assistant who perfectly summarizes scientific paper, and gives the core idea of the paper to the user. Your answer should be in {lang}.",
+            #     },
+            #     {"role": "user", "content": prompt},
+            # ],
+            # **llm_params.get('generation_kwargs', {})
+        # )
         tldr = response.choices[0].message.content
         return tldr
     
