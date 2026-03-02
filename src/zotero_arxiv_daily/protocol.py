@@ -53,7 +53,6 @@ class Paper:
         prompt = enc.decode(prompt_tokens)
         
         response = openai_client.chat.completions.create(
-        response = openai_client.chat.completions.create(
                 messages=[
                     {
                         "role": "system",
