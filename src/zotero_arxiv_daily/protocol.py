@@ -23,16 +23,9 @@ class Paper:
 
     def _generate_tldr_with_llm(self, openai_client:OpenAI,llm_params:dict) -> str:
         lang = llm_params.get('language', 'Chinese')
-        prompt = f"""
-        请用{lang}写一句话TLDR总结该论文。
-        
-        要求：
-        - 只输出一句话
-        - 不要使用英文
-        - 不要添加解释
-        
-        """
-        # prompt = f"Given the following information of a paper, generate a one-sentence TLDR summary in {lang}:\n\n"
+        # prompt = f"""Given the title, abstract, introduction and the conclusion (if any) of a paper in latex format, generate a one-sentence TLDR summary in __LANG__
+        # """
+        prompt = f"Given the following information of a paper, generate a one-sentence TLDR summary in {lang}:\n\n"
         if self.title:
             prompt += f"标题：{self.title}\n\n"
             # prompt += f"Title:\n {self.title}\n\n"
@@ -56,7 +49,7 @@ class Paper:
                 messages=[
                     {
                         "role": "system",
-                        "content": f"你必须严格使用{lang}回答，不得使用英文。",
+                        "content": f"You are an assistant who perfectly summarizes scientific paper, and gives the core idea of the paper to the user. Your answer should be in {lang}.",
                     },
                     {"role": "user", "content": prompt},
                 ],
