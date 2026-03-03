@@ -25,7 +25,15 @@ class Paper:
         lang = llm_params.get('language', 'Chinese')
         # prompt = f"""Given the title, abstract, introduction and the conclusion (if any) of a paper in latex format, generate a one-sentence TLDR summary in __LANG__
         # """
-        prompt = f"结合下面的信息, 用{{lang}}生成TLDR 总结\n\n"
+        prompt = f"""
+            请用{lang}写一句话TLDR总结该论文。
+            
+            要求：
+            - 只输出一句话
+            - 不要使用英文
+            - 不要添加解释
+            
+            """
         if self.title:
             prompt += f"标题：{self.title}\n\n"
             # prompt += f"Title:\n {self.title}\n\n"
@@ -49,7 +57,7 @@ class Paper:
                 messages=[
                     {
                         "role": "system",
-                        "content": f"你是一个非常完美准确的科研论文总结助手,请你用中文给读者描述论文的核心内容",
+                        "content": f"你是一个非常完美准确的科研论文总结助手,请你必须严格使用中文给读者描述论文的核心内容",
                     },
                     {"role": "user", "content": prompt},
                 ],
