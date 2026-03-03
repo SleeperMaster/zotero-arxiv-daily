@@ -51,7 +51,7 @@ class Paper:
         prompt_tokens = enc.encode(prompt)
         prompt_tokens = prompt_tokens[:4000]  # truncate to 4000 tokens
         prompt = enc.decode(prompt_tokens)
-        
+        print("### USING MODIFIED CHINESE PROMPT VERSION ###")
         response = openai_client.chat.completions.create(
                 messages=[
                     {
